@@ -3,6 +3,11 @@ const btn = document.querySelector('#btn');
 const ul = document.querySelector('ul');
 const input = document.querySelector('input');
 
+let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []
+
+localStorage.setItem('items', JSON.stringify(itemsArray))
+const data = JSON.parse(localStorage.getItem('items'))
+
 loadEvents();
 
 function loadEvents(){
@@ -14,9 +19,12 @@ function loadEvents(){
 function submit(e){
     e.preventDefault();
     if(input.value !== ''){
+        itemsArray.push(input.value)
+        localStorage.setItem('items', JSON.stringify(itemsArray))
         addTask(input.value)
         input.value = ''
     }
+
 }
 
 function addTask(task){
@@ -26,6 +34,7 @@ function addTask(task){
 }
 
 function clearList(e){
+    localStorage.clear()
     ul.innerHTML ='';
 }
 
@@ -53,3 +62,6 @@ function TickTask(e){
         task.style.color = 'black';
     }
 }
+data.forEach(item => {
+    addTask(item)
+  })
